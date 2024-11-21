@@ -10,6 +10,11 @@ public class UserManager // Clase que se encarga de gestionar los datos y consul
         usuariosDelJuego.add(nuevoUsuario);
     }
 
+    public int getUsersListLenght()
+    {
+        return usuariosDelJuego.size();
+    }
+
     public ArrayList<UserVideogame> getUsersList()
     {
         return usuariosDelJuego;
@@ -26,5 +31,19 @@ public class UserManager // Clase que se encarga de gestionar los datos y consul
         }
 
         return usernames;
+    }
+
+    public UserVideogame userIdentifier(String username)
+    {
+        int userIndex = 0;
+        
+        for(int i = 0; i < getUsersListLenght(); i++)
+        {
+            if(username.equals(usuariosDelJuego.get(i).getUsername()))
+            {
+                userIndex = i;
+            }
+        }
+        return usuariosDelJuego.get(userIndex);
     }
 }

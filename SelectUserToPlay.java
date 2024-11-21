@@ -27,9 +27,10 @@ public class SelectUserToPlay
         JButton startMatch = new JButton("Iniciar partida");
 
         // Settings y eventos de los botones
-        backToMenu.addActionListener(e -> InnerSelectUserToPlay.closeUserSelectionFrame(showUsernames));
+        listaConUsuarios.addListSelectionListener(e -> startMatch.setEnabled(true));
+        backToMenu.addActionListener(e -> showUsernames.dispose());
         startMatch.setEnabled(false);
-        listaConUsuarios.addListSelectionListener(e -> InnerSelectUserToPlay.itemSelected(listaConUsuarios.getSelectedValue(), startMatch));
+        startMatch.addActionListener(e -> InnerSelectUserToPlay.startGame(listaConUsuarios.getSelectedValue(), userManager));
 
         panelForButtons.add(backToMenu);
         panelForButtons.add(startMatch);
@@ -38,20 +39,15 @@ public class SelectUserToPlay
         // Last settings of the screen
         showUsernames.add(panelLayout);
         showUsernames.setUndecorated(true);
-        showUsernames.setSize(500,300);
+        showUsernames.setSize(300,300);
         showUsernames.setLocationRelativeTo(null);
         showUsernames.setVisible(true);
     }
     class InnerSelectUserToPlay 
     {
-        public static void closeUserSelectionFrame(JFrame frame)
+        public static void startGame(String userSelected, UserManager userManager)
         {
-            frame.dispose();
-        }  
-        
-        public static void itemSelected(String userSelected, JButton startMatch)
-        {
-            startMatch.setEnabled(true); 
+            new GameScreen(userManager.userIdentifier(userSelected));
         }
     }
 }
