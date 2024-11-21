@@ -1,10 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import javax.sound.sampled.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import java.io.File;
     
 public class MainScreen
@@ -25,7 +23,7 @@ public class MainScreen
         int heigthImg = 300;
 
         // Settings de la GUI
-        mainFrame.setUndecorated(true); // Ésta linea la usaremos solo para cuando la GUI esté ordenada
+        mainFrame.setUndecorated(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setResizable(false);
         mainFrame.setFocusCycleRoot(true);
@@ -38,7 +36,7 @@ public class MainScreen
             Clip audioClip = AudioSystem.getClip();
 
             audioClip.open(audioStream);
-            // audioClip.start(); // Inicio de la canción
+            audioClip.start(); // Inicio de la canción
         
             // Procesamiento de la imagen
             BufferedImage originalImage = ImageIO.read(new File("images/Logo.png"));
@@ -55,7 +53,7 @@ public class MainScreen
             JButton buttonExit = new JButton("Salir");
 
             // Propiedades de cada botón
-            Dimension buttonSize = new Dimension(30, 50);
+            Dimension buttonSize = new Dimension(10, 50);
             buttonStartGame.setForeground(Color.WHITE);
             buttonStartGame.setBackground(Color.GREEN);
             buttonExit.setForeground(Color.WHITE);

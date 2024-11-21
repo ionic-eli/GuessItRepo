@@ -14,4 +14,17 @@ public class UserManager // Clase que se encarga de gestionar los datos y consul
     {
         return usuariosDelJuego;
     }
+
+    public String[] selectUserList()
+    {
+        int amountUsers = getUsersList().size();
+        String[] usernames = new String[amountUsers]; 
+
+        for(int i = 0; i < amountUsers; i++)
+        {
+            usernames[i] = getUsersList().get(i).getUsername();
+        }
+
+        return usernames;
+    }
 }

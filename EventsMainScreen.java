@@ -1,9 +1,6 @@
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import javax.swing.*;
 import java.util.ArrayList;
 import javax.sound.sampled.Clip;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 public class EventsMainScreen
 {
@@ -18,11 +15,7 @@ public class EventsMainScreen
 
     protected static void startGame(JFrame mainFrame, Clip audio)
     {
-        // Aquí ya deberían estar cargados los datos serializados del archivo .ser
-
-        // audio.stop();
-        // mainFrame.dispose();
-        // new GameScreen(); // Futura gameScreen
+        new SelectUserToPlay(userManager);
     }
     
     protected static void showScoreboard()
@@ -71,22 +64,9 @@ public class EventsMainScreen
 
     protected static void closeApp(Clip audio)
     {
-        ArrayList<UserVideogame> userList = userManager.getUsersList();
-
-        if(userList.size() > 0)
+        if(userManager.getUsersList().size() > 0)
         {
-            try 
-            {
-                FileOutputStream fos = new FileOutputStream("Users.ser");
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
-
-                for(int i = 0; i < userList.size(); i++)
-                {
-                    oos.writeObject(userList.get(i));
-                }
-                oos.close();
-            } 
-            catch (Exception e){}  
+            ReadWriteData.writeData(userManager.getUsersList()); 
         }
         
         audio.stop();

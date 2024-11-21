@@ -14,8 +14,9 @@ public class Scoreboard
         {
             // Settings del Frame
             JFrame scoreboardFrame = new JFrame();
+            scoreboardFrame.setSize(600, 600);
             // scoreboardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            scoreboardFrame.setSize(1920, 1080);
+            scoreboardFrame.setLocationRelativeTo(null);
 
             // Mostrando los datos en formato de tabla
             String[] header = {"Nombre de usuario", "Veces usado: suma", "Veces usado: resta", "Veces usado: multiplicación", "Veces usado: división", "Puntaje"}; // Falta agregar el tiempo
