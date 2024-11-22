@@ -7,7 +7,7 @@ public class ReadWriteData
     {
         UserManager userManager = new UserManager(); // Instancia de user manager a generar
         
-        try 
+        try
         {
             FileInputStream fis = new FileInputStream("Users.ser");
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -17,7 +17,7 @@ public class ReadWriteData
                 try 
                 {
                     UserVideogame user = null;
-                    user = (UserVideogame) ois.readObject();
+                    user = (UserVideogame) ois.readObject(); // hello, alex was here
                     userManager.newUser(user);
                 }
                 catch (EOFException e) 
@@ -47,6 +47,7 @@ public class ReadWriteData
             for(int i = 0; i < userList.size(); i++)
             {
                 oos.writeObject(userList.get(i));
+                // System.out.println("Usuario cargado en el .ser!");
             }
             oos.close();
         } 

@@ -1,5 +1,4 @@
 // Clase para modelar a un usuario de la vida real
-
 import java.io.Serializable;
 
 public class Usuario implements Serializable

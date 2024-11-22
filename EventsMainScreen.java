@@ -22,44 +22,45 @@ public class EventsMainScreen
     {
         new Scoreboard().leerUsuarios(userManager.getUsersList());
     }
-    protected static void registerNewUser()
+    protected static int registerNewUser()
     {
+        // Considerar dict
+        // key = value
+        // error = "Mensaje de error"
+        
+        String msg = "";
+        String titulo = "";
         ArrayList<UserVideogame> users = userManager.getUsersList();
-        int userExist = 0; // Por defecto, el usuario existe.
 
         String username = JOptionPane.showInputDialog(null, "Ingresa el nombre del usuario que quieres registrar", "Registro de usuario", JOptionPane.QUESTION_MESSAGE);
 
-        if(!username.equals(""))  // Verificando que el inputText no esté vacío
+        if(username.equals(""))
         {
-            if(users.size() > 0) // Verificando que la lista no está vacío
+            msg = "Necesita ingresar un nombre para poder registrarse.";
+            titulo = "Campo de texto vacío";
+            JOptionPane.showMessageDialog(null, msg, titulo, JOptionPane.ERROR_MESSAGE);
+            return 0;
+        }
+
+        // Busco que el nombre de usuario no coincida con otros
+        for(UserVideogame user: users)
+        {
+            // Validando que el nombre de usuario no exista para agregarlo a la lista de usuaruis
+            if(user.getUsername().equals(username)) // Si el nombre de usuario existe...
             {
-                for(UserVideogame user : users)
-                {
-                    // Validando que el nombre de usuario no exista para agregarlo a la lista de usuaruis
-                    if(user.getUsername().equals(username)) // Si el nombre de usuario existe...
-                    {
-                        JOptionPane.showMessageDialog(null, "Ese nombre de usuario ya está registrado, intente usando otro nombre.", "Usuario ya registrado.", JOptionPane.ERROR_MESSAGE);
-                        userExist = 0; // El usuario existe, por lo tanto, no puede registrarse 
-                        break;
-                    }
-                    userExist = 1; // El usuario no existe
-                }
-            }
-            else
-            {
-                userExist = 1; // El usuario no existe
-            }
-    
-            if(userExist == 1)
-            {
-                userManager.newUser(new UserVideogame(username)); // Enviando una referencia de Usuario con el username recién ingresado
-                JOptionPane.showMessageDialog(null, "El usuario ha sido registrado exitosamente.", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+                msg = "Usuario ya registrado.";
+                titulo = "Ese nombre de usuario ya está registrado, intente usando otro nombre.";
+                JOptionPane.showMessageDialog(null, msg, titulo, JOptionPane.ERROR_MESSAGE);
+                return 0;
             }
         }
-        else
-        {
-            JOptionPane.showMessageDialog(null, "Necesita ingresar un nombre para poder registrarse.", "Campo de texto vacío", JOptionPane.ERROR_MESSAGE);
-        }
+
+        msg = "El usuario ha sido registrado exitosamente.";
+        titulo = "Campo de texto vacío";
+
+        userManager.newUser(new UserVideogame(username)); // Enviando una referencia de Usuario con el username recién ingresado
+        JOptionPane.showMessageDialog(null, msg, "Campo de texto vacío", JOptionPane.INFORMATION_MESSAGE);
+        return 1;
     }
 
     protected static void closeApp(Clip audio)
