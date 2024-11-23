@@ -22,6 +22,7 @@ public class EventsMainScreen
     {
         new Scoreboard().leerUsuarios(userManager.getUsersList());
     }
+    
     protected static int registerNewUser()
     {
         // Considerar dict
