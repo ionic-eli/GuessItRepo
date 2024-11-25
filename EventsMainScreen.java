@@ -1,77 +1,76 @@
-import javax.swing.*;
 import java.util.ArrayList;
 import javax.sound.sampled.Clip;
+import javax.swing.*;
 
-public class EventsMainScreen
-{
-    protected static UserManager userManager;
+public class EventsMainScreen {
+    protected static UserManager userManager; // referencia estática para manejar usuarios
+    private static JFrame mainMenuFrame; // Almacena el marco principal
+    private static Clip audioClip; // Almacena la música de fondo
 
-    EventsMainScreen(UserManager userManager)
-    {
-        EventsMainScreen.userManager = userManager; // Igualando las referencias para evitar listas duplicadas
+    EventsMainScreen(UserManager userManager) {
+        EventsMainScreen.userManager = userManager;
     }
 
-    // EVENTOS / MÉTODOS DE CADA BOTÓN DE LA CLASE MainScreen
+    // eventos / métodos de cada botón de la clase mainscreen
 
-    protected static void startGame(JFrame mainFrame, Clip audio)
-    {
-        new SelectUserToPlay(userManager);
+    protected static void startGame(JFrame frame, Clip audio) {
+        // inicializar referencias al menú principal y al clip de audio
+        mainMenuFrame = frame;
+        audioClip = audio;
+
+        // inicializa la selección de usuario para comenzar el juego
+        new SelectUserToPlay(userManager, mainMenuFrame, audioClip);
     }
-    
-    protected static void showScoreboard()
-    {
+
+    protected static void showScoreboard() {
+        // muestra la tabla de puntuaciones con los datos de usuarios
         new Scoreboard().leerUsuarios(userManager.getUsersList());
     }
-    
-    protected static int registerNewUser()
-    {
-        // Considerar dict
-        // key = value
-        // error = "Mensaje de error"
-        
+
+    protected static int registerNewUser() {
         String msg = "";
         String titulo = "";
         ArrayList<UserVideogame> users = userManager.getUsersList();
 
-        String username = JOptionPane.showInputDialog(null, "Ingresa el nombre del usuario que quieres registrar", "Registro de usuario", JOptionPane.QUESTION_MESSAGE);
+        String username = JOptionPane.showInputDialog(
+            null,
+            "Ingresa el nombre del usuario que quieres registrar",
+            "Registro de usuario",
+            JOptionPane.QUESTION_MESSAGE
+        );
 
-        if(username.equals(""))
-        {
+        if (username == null || username.trim().isEmpty()) {
             msg = "Necesita ingresar un nombre para poder registrarse.";
             titulo = "Campo de texto vacío";
             JOptionPane.showMessageDialog(null, msg, titulo, JOptionPane.ERROR_MESSAGE);
             return 0;
         }
 
-        // Busco que el nombre de usuario no coincida con otros
-        for(UserVideogame user: users)
-        {
-            // Validando que el nombre de usuario no exista para agregarlo a la lista de usuaruis
-            if(user.getUsername().equals(username)) // Si el nombre de usuario existe...
-            {
-                msg = "Usuario ya registrado.";
-                titulo = "Ese nombre de usuario ya está registrado, intente usando otro nombre.";
+        for (UserVideogame user : users) {
+            if (user.getUsername().equalsIgnoreCase(username.trim())) {
+                msg = "Ese nombre de usuario ya está registrado. Intente con otro nombre.";
+                titulo = "Usuario ya registrado";
                 JOptionPane.showMessageDialog(null, msg, titulo, JOptionPane.ERROR_MESSAGE);
                 return 0;
             }
         }
 
+        userManager.newUser(new UserVideogame(username.trim()));
         msg = "El usuario ha sido registrado exitosamente.";
-        titulo = "Campo de texto vacío";
-
-        userManager.newUser(new UserVideogame(username)); // Enviando una referencia de Usuario con el username recién ingresado
-        JOptionPane.showMessageDialog(null, msg, "Campo de texto vacío", JOptionPane.INFORMATION_MESSAGE);
+        titulo = "Registro exitoso";
+        JOptionPane.showMessageDialog(null, msg, titulo, JOptionPane.INFORMATION_MESSAGE);
         return 1;
     }
 
-    protected static void closeApp(Clip audio)
-    {
-        if(userManager.getUsersList().size() > 0)
-        {
-            ReadWriteData.writeData(userManager.getUsersList()); 
+    protected static void closeApp(Clip audio) {
+        if (userManager.getUsersList().size() > 0) {
+            ReadWriteData.writeData(userManager.getUsersList());
         }
-        
-        audio.stop();
+
+        if (audio != null) {
+            audio.stop();
+            audio.close();
+        }
         System.exit(0);
     }
 }
